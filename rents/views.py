@@ -36,4 +36,4 @@ def show_my_rents(request):
             'name': 'Екатерина'
         }
     }
-    return render(request, template_name='active-rents.html', context=context)
+    return render(request, template_name='my-rent.html', context=context)
