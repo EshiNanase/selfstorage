@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from personal_account.models import CustomUser
+from personal_account.models import Client
 
 
 class RegisterUserForm(UserCreationForm):
@@ -15,7 +15,7 @@ class RegisterUserForm(UserCreationForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = Client
         fields = ['email', 'password1', 'password2']
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'E-mail'}),
@@ -28,7 +28,7 @@ class RegisterUserForm(UserCreationForm):
 class LoginUserForm(forms.ModelForm):
 
     class Meta:
-        model = CustomUser
+        model = Client
         fields = ['email', 'password']
         widgets = {
             'email': forms.EmailInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'E-mail'}),
