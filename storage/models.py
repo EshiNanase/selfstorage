@@ -37,3 +37,7 @@ class Box(models.Model):
 class StorageImage(models.Model):
     image = models.ImageField('Фото склада', blank=True, null=True)
     storage = models.ForeignKey(Storage, related_name='images', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Фото склада'
+        verbose_name_plural = 'Фото складов'
