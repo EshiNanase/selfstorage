@@ -1,10 +1,14 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Storage, StorageImage
+from .models import Storage, StorageImage, Box
 
 
 admin.site.register(StorageImage)
+admin.site.register(Box)
+
+class BoxInline(admin.TabularInline):
+    model = Box
 
 
 class StorageImageInline(admin.TabularInline):
@@ -23,7 +27,7 @@ class StorageImageInline(admin.TabularInline):
 @admin.register(Storage)
 class StorageAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ['city', 'street']}
-    inlines = [StorageImageInline]
+    inlines = [BoxInline, StorageImageInline]
     fields = (
         'city',
         'street',
