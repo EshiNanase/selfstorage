@@ -29,6 +29,9 @@ class Box(models.Model):
     height = models.IntegerField('Высота (см)', validators=[MinValueValidator(0)])
     depth = models.IntegerField('Глубина (см)', validators=[MinValueValidator(0)])
 
+    def __str__(self):
+        return f'№{self.number}, {self.storage}'
+
     class Meta:
         verbose_name = 'Бокс'
         verbose_name_plural = 'Боксы'
@@ -37,6 +40,9 @@ class Box(models.Model):
 class StorageImage(models.Model):
     image = models.ImageField('Фото склада', blank=True, null=True)
     storage = models.ForeignKey(Storage, related_name='images', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'№{self.id}, {self.storage}'
 
     class Meta:
         verbose_name = 'Фото склада'
