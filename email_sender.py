@@ -16,10 +16,10 @@ from personal_account.models import Client
 def send_email(msg_body: str, subject: str, receivers: QuerySet[Client]):
     email_validator = EmailValidator()
 
-    sender_email = settings['EMAIL_LOGIN']
-    sender_password = settings['EMAIL_PASSWORD']
-    smtp_server = settings['SMTP_SERVER']
-    smtp_server_port = settings['SMTP_PORT', 465]
+    sender_email = settings.EMAIL_NOTIFIER_LOGIN
+    sender_password = settings.EMAIL_NOTIFIER_PASSWORD
+    smtp_server = settings.EMAIL_NOTIFIER_SMTP_SERVER
+    smtp_server_port = settings.EMAIL_NOTIFIER_SMTP_SERVER_PORT
 
     smtpobj = smtplib.SMTP_SSL(smtp_server, smtp_server_port)
     smtpobj.login(sender_email, sender_password)
@@ -38,6 +38,6 @@ def send_email(msg_body: str, subject: str, receivers: QuerySet[Client]):
         msg['To'] = receiver_email
         msg.attach(MIMEText(msg_body, 'plain'))
         smtpobj.send_message(msg)
-        time.sleep=5
+        time.sleep = 5
 
     smtpobj.quit()

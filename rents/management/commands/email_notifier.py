@@ -27,7 +27,7 @@ class Command(BaseCommand):
             filter(rents__expired_at__gte=right_now)
 
         clients_with_soon_expiring_rent = Client. \
-            objects.filter(rents__expired_lte=tomorrow). \
+            objects.filter(rents__expired_at__lte=tomorrow). \
             exclude(rents__expired_at__gte=right_now)
 
         send_email(
