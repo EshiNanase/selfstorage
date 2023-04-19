@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from personal_account.models import Client
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class RegisterUserForm(UserCreationForm):
@@ -38,3 +39,24 @@ class LoginUserForm(forms.ModelForm):
             'email': '',
             'password': ''
         }
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Client
+        fields = ['email', 'phone_number', 'password']
+        widgets = {
+            'email': forms.EmailInput(
+                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
+            'phone_number': forms.TextInput(
+                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
+            'password': forms.PasswordInput(
+                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
+        }
+        labels = {
+            'email': 'E-mail',
+            'password': 'Пароль',
+            'phone_number': 'Телефон'
+        }
+
