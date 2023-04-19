@@ -4,7 +4,7 @@ from django.db import models
 
 class Storage(models.Model):
     title = models.CharField('Название', max_length=200),
-    description = models.TextField('Описание', null=True, blank=True)
+    description = models.TextField('Описание', blank=True)
     address = models.CharField('Адрес', max_length=200),
     longitude = models.FloatField('Долгота', null=True, blank=True)
     latitude = models.FloatField('Широта', null=True, blank=True)
