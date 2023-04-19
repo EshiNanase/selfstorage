@@ -15,10 +15,10 @@ class Rent(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='rents', verbose_name='Арендатор')
     box = models.ForeignKey(Box, on_delete=models.SET_NULL, null=True, related_name='rents', verbose_name='Бокс')
     box_price = models.DecimalField('Стоимость аренды в сутки', max_digits=10, decimal_places=2)
-    status = models.CharField('Статус', choices=STATUSES, max_length=20)
+    status = models.CharField('Статус', choices=STATUSES, max_length=20, default='ACTIVE')
     started_at = models.DateTimeField('Начало аренды', default=now)
     expired_at = models.DateTimeField('Окончание аренды')
-    closed_at = models.DateTimeField('Завершена')
+    closed_at = models.DateTimeField('Завершена', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Аренда'
