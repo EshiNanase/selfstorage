@@ -16,10 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from storage.views import faq
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('faq/', faq, name='faq'),
+    path('', include('storage.urls')),
     path('profile/', include('personal_account.urls'))
 ]
