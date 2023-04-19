@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -18,9 +19,9 @@ class Box(models.Model):
     price = models.DecimalField('Стоимость аренды в сутки', max_digits=10, decimal_places=2)
     is_stored = models.BooleanField('Занято', default=False)
     storage = models.ForeignKey(Storage, related_name='boxes', on_delete=models.CASCADE)
-    width = models.IntegerField('Ширина (см)')
-    height = models.IntegerField('Высота (см)')
-    depth = models.IntegerField('Глубина (см)')
+    width = models.IntegerField('Ширина (см)', validators=[MinValueValidator(0)])
+    height = models.IntegerField('Высота (см)', validators=[MinValueValidator(0)])
+    depth = models.IntegerField('Глубина (см)', validators=[MinValueValidator(0)])
 
     class Meta:
         verbose_name = 'Бокс'
