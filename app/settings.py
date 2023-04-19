@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
     'personal_account',
     'storage',
     'rents'
@@ -69,6 +70,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'personal_account.views.inject_register_form',
+                'personal_account.views.inject_login_form',
             ],
         },
     },
@@ -136,7 +139,12 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 EMAIL_NOTIFIER_LOGIN = env.str('EMAIL_NOTIFIER_LOGIN')
 EMAIL_NOTIFIER_PASSWORD = env.str('EMAIL_NOTIFIER_PASSWORD')
 EMAIL_NOTIFIER_SMTP_SERVER = env.str('EMAIL_NOTIFIER_SMTP_SERVER')
 EMAIL_NOTIFIER_SMTP_SERVER_PORT = env.int('EMAIL_NOTIFIER_SMTP_SERVER_PORT', 465)
+
+AUTH_USER_MODEL = "personal_account.Client"
+LOGIN_URL = 'index'
+

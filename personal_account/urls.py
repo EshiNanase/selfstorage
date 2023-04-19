@@ -1,6 +1,9 @@
+from django.urls import path, include
+from .views import my_rent_view, logout_view, login_view
 from django.urls import path
-from .views import ProfileView
 
 urlpatterns = [
-    path('', ProfileView.as_view())
+    path('', my_rent_view, name='my-rent'),
+    path('logout', logout_view, name='logout'),
+    path('login', login_view, name='login')
 ]
