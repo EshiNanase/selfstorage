@@ -3,11 +3,17 @@ from django.db import models
 
 
 class Storage(models.Model):
-    title = models.CharField('Название', max_length=200),
+    slug = models.SlugField('Название', blank=True)
     description = models.TextField('Описание', blank=True)
-    address = models.CharField('Адрес', max_length=200),
+    specificity = models.CharField('Особенность', max_length=100, blank=True)
+    city = models.CharField('Город', max_length=50, blank=True)
+    street = models.CharField('Улица', max_length=100, blank=True)
+    building = models.CharField('Дом/корпус', max_length=20, blank=True)
     longitude = models.FloatField('Долгота', null=True, blank=True)
     latitude = models.FloatField('Широта', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.city}, ул.{self.street}, д.{self.building}'
 
     class Meta:
         verbose_name = 'Склад'
@@ -26,3 +32,8 @@ class Box(models.Model):
     class Meta:
         verbose_name = 'Бокс'
         verbose_name_plural = 'Боксы'
+
+
+class StorageImage(models.Model):
+    image = models.ImageField('Фото склада', blank=True, null=True)
+    storage = models.ForeignKey(Storage, related_name='images', on_delete=models.CASCADE)
