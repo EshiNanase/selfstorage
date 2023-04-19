@@ -5,7 +5,12 @@ from .models import Storage, StorageImage, Box
 
 
 admin.site.register(StorageImage)
-admin.site.register(Box)
+
+
+@admin.register(Box)
+class BoxAdmin(admin.ModelAdmin):
+    list_filter = ['is_stored', 'storage__slug']
+
 
 class BoxInline(admin.TabularInline):
     model = Box
@@ -38,3 +43,4 @@ class StorageAdmin(admin.ModelAdmin):
         'latitude',
         'slug'
     )
+    list_filter = ['city']
