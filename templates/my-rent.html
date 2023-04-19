@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Личный кабинет{% endblock %}
-
+{% block title %}Мои заказы{% endblock %}
+{% load static %}
 {% block content %}
 <main class="container mt-header">
 	<div class="row" role="tablist">
 		<div class="col-lg-3 d-flex flex-column nav nav-pills">
 			<button class="ps-0 btn bg-white fs_24 shadow-none SelfStorage_orange SelfStorage_tab active" id="LK-tab" data-bs-toggle="pill" data-bs-target="#LK" type="button" role="tab" aria-controls="LK" aria-selected="true">Личный кабинет</button>
 			<button class="ps-0 btn bg-white fs_24 shadow-none SelfStorage_grey SelfStorage_tab" id="Rent-tab" data-bs-toggle="pill" data-bs-target="#Rent" type="button" role="tab" aria-controls="Rent" aria-selected="false">Моя аренда</button>
-			<a href="faq.html" class="btn fs_24 shadow-none text-decoration-none SelfStorage_grey SelfStorage_tab">FAQ</a>
+			<a href="{% url 'faq' %}" class="btn fs_24 shadow-none text-decoration-none SelfStorage_grey SelfStorage_tab">FAQ</a>
 			<a href="#" class="btn fs_24 shadow-none text-decoration-none SelfStorage_grey SelfStorage_tab">Выйти</a>
 		</div>
 		<div class="col-lg-9">
@@ -17,7 +17,7 @@
 				<div class="tab-pane fade show active" id="LK" role="tabpanel" aria-labelledby="LK-tab">
 					<div class="row">
 						<div class="col-12 col-sm-5 d-flex flex-column align-items-center">
-							<img src="{% static 'img/image10.png' %}" class="rounded-pill mb-3" alt="">
+							<img src="{% static 'img/image10.png'%}" class="rounded-pill mb-3" alt="">
 							<h4>Екатерина Иванова</h4>
 						</div>
 						<div class="col-12 col-sm-7 d-flex flex-column">
@@ -56,32 +56,29 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="Rent" role="tabpanel" aria-labelledby="Rent-tab">
-					<h1 class="fw-bold SelfStorage_green mb-5">Добрый день, Екатерина!</h1>
+					<h1 class="fw-bold SelfStorage_green mb-5">Добрый день, {{ client.name }}!</h1>
 					<a href="#" class="SelfStorage_orange">История аренды</a>
-					<h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или забрать вещи до 28 июня 2022 года включительно.</h4>
-					<div class="mb-5">
-						<h4 class="SelfStorage_green">Мой склад №1</h4>
-						<h4>Одинцово, ул. Северная, д. 36</h4>
-						<h4 class="SelfStorage_green">Мой бокс</h4>
-						<h4>№2389-12</h4>
-						<h4 class="SelfStorage_green">Срок аренды</h4>
-						<h4>15.03.2022 - 28.06.2022</h4>
-						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду</button></div>
-						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
-						<a href="#" class="SelfStorage_orange">Нужна помощь?</a>
-					</div>
-
-					<div class="mb-5">
-						<h4 class="SelfStorage_green">Мой склад №2</h4>
-						<h4>Люберцы, ул. Советская, д. 88</h4>
-						<h4 class="SelfStorage_green">Мой бокс</h4>
-						<h4>№2335-10</h4>
-						<h4 class="SelfStorage_green">Срок аренды</h4>
-						<h4>18.03.2022 - 21.09.2022</h4>
-						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду</button></div>
-						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
-						<a href="#" class="SelfStorage_orange">Нужна помощь?</a>
-					</div>
+					{% if not rents %}
+						<h4 class="SelfStorage_grey my-5">У вас еще нет аренды :(<br>Но вы можете арендовать свой первый бокс  по  привлекательной цене прямо сейчас</h4>
+						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="{% url 'faq'%}">Арендовать бокс</button></div>
+					{% else %}
+						{% for rent in rents %}
+							{% if rent.expired_soon %}
+								<h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или забрать вещи до {{ rent.expired_at }} включительно.</h4>
+							{% endif %}
+							<div class="mb-5">
+								<h4 class="SelfStorage_green">{{ rent.box.storage.title }}</h4>
+								<h4>{{ rent.box.storage.address }}</h4>
+								<h4 class="SelfStorage_green">Мой бокс</h4>
+								<h4>{{ rent.box.number }}</h4>
+								<h4 class="SelfStorage_green">Срок аренды</h4>
+								<h4>{{ rent.started_at }} - {{ rent.expired_at }}</h4>
+								<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду</button></div>
+								<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
+								<a href="#" class="SelfStorage_orange">Нужна помощь?</a>
+							</div>
+						{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
