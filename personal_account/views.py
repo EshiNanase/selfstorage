@@ -4,7 +4,6 @@ from .forms import RegisterUserForm, LoginUserForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
-
 def my_rent_view(request):
     if request.method == 'POST':
 
