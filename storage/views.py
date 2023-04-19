@@ -7,3 +7,7 @@ def faq(request):
 
 def index(request):
     return render(request, 'index.html')
+
+
+def boxes(request):
+    return render(request, 'boxes.html')
