@@ -18,17 +18,18 @@ def boxes(request):
         'storages': []
     }
 
-    for storage in storages:
-        
+    for storage in storages:  
         storage_desc = {
             'description': storage.description,
             'specificity': storage.specificity,
             'city': storage.city,
             'street': storage.street,
             'building': storage.building,
+            'thumbnail_image': storage.thumbnail_image.url,
             'slug': storage.slug,
             'images': [item.image.url for item in storage.images.all()],
             'avaliable_boxes': [],
+            'celsius_temperature': storage.celsius_temperature,
             'boxes_amount': storage.boxes.count,
             'box_min_price': storage.boxes.aggregate(Min('price'))['price__min'],
             'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] / 100, 1)

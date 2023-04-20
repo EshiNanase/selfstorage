@@ -26,7 +26,7 @@
 			<li class="nav-item flex-grow-1 mx-2" role="presentation">
 				<a href="#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-{{ storage.slug }}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{ storage.slug }}" role="tab" aria-controls="pills-{{ storage.slug }}" aria-selected="true">
 					<div class="col-12 col-lg-3 d-flex justify-content-center">
-						<img src="{{ storage.images|first }}" alt="" class="mb-3 mb-lg-0" width="270">
+						<img src="{{ storage.thumbnail_image }}" alt="" class="mb-3 mb-lg-0">
 					</div>
 					<div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
 						<h4 class="text-center">{{ storage.city }}</h4>
@@ -55,80 +55,80 @@
 	<article class="pt-header" id="BOX">
 		<div class="tab-content" id="boxes-content">
 			{% for storage in storages %}
-			{% if storage is storages|first %}
-			<div class="tab-pane fade show active" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
-			{% else %}
-			<div class="tab-pane fade" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
-			{% endif %}
-				<h1 class="text-center mb-4 fw-bold">{{storage.city}}, ул. {{storage.street}}, д. {{storage.building}}</h1>
-				<div class="row d-flex flex-column mb-5">
-					<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
-						<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Контакты" data-bs-content="Список контактов">
-							Контакты
-						</a>
-						<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Описание" data-bs-content="Текст описания">
-							Описание
-						</a>
-						<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Проезд" data-bs-content="Описание проезда">
-							Проезд
-						</a>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12 col-lg-6">
-						<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
-							<div class="carousel-inner">
-								{% for image in storage.images %}
-								    {% if image is storage.images|first %}
-								        <div class="carousel-item active">
-								    {% else %}
-								        <div class="carousel-item">
-								    {% endif %}
-								        	<div class="d-flex flex-column align-items-center">
-								    		    <img src="{{ image }}" alt="">
-								    	    </div>
-								        </div>
-								{% endfor %}
-							</div>
-							<div class="w-100 d-flex justify-content-center my-3">
-								<button data-bs-target="#carouselExampleControls1" data-bs-slide="prev" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-									<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-left" viewBox="0 0 16 16">
-										<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-									</svg>
-								</button>
-								<div style="width: 1rem"></div>
-								<button data-bs-target="#carouselExampleControls1" data-bs-slide="next" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
-									<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-right" viewBox="0 0 16 16">
-										<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-lg-6">
-						<div class="row">
-							<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">17 °С</span>
-								<span class="SelfStorage_grey mb-3">Температура на складе</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">{{ storage.avaliable_boxes|length }}  из {{ storage.boxes_amount }}</span>
-								<span class="SelfStorage_grey mb-3">Боксов свободно</span>
-							</div>
-							<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
-								<span class="fs_30 fw-bold SelfStorage_orange">до {{ storage.box_max_height }} м</span>
-								<span class="SelfStorage_grey mb-3">Высота потолка</span>
-								<span class="fs_30 fw-bold SelfStorage_orange">от {{storage.box_min_price}} ₽</span>
-								<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
-							</div>
-							<div class="d-flex flex-column align-items-center align-items-lg-start">
-								<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Арендовать бокс</a>
-								<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
-							</div>
-							<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
-						</div>
-					</div>
-				</div>
-			</div>
+			    {% if storage is storages|first %}
+			    <div class="tab-pane fade show active" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
+			    {% else %}
+			    <div class="tab-pane fade" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
+			    {% endif %}
+			    	<h1 class="text-center mb-4 fw-bold">{{ storage.city }}, ул. {{ storage.street }}, д. {{ storage.building }}</h1>
+			    	<div class="row d-flex flex-column mb-5">
+			    		<div class="col-12 col-sm-6 col-lg-4 d-flex justify-content-between align-self-center">
+			    			<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Контакты" data-bs-content="Список контактов">
+			    				Контакты
+			    			</a>
+			    			<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Описание" data-bs-content="Текст описания">
+			    				Описание
+			    			</a>
+			    			<a type="button" class="SelfStorage_orange" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" title="Проезд" data-bs-content="Описание проезда">
+			    				Проезд
+			    			</a>
+			    		</div>
+			    	</div>
+			    	<div class="row">
+			    		<div class="col-12 col-lg-6">
+			    			<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
+			    				<div class="carousel-inner">
+			    					{% for image in storage.images %}
+			    					    {% if image is storage.images|first %}
+			    					        <div class="carousel-item active">
+			    					    {% else %}
+			    					        <div class="carousel-item">
+			    					    {% endif %}
+			    					        	<div class="d-flex flex-column align-items-center">
+			    					    		    <img src="{{ image }}" alt="">
+			    					    	    </div>
+			    					        </div>
+			    					{% endfor %}
+			    				</div>
+			    				<div class="w-100 d-flex justify-content-center my-3">
+			    					<button data-bs-target="#carouselExampleControls1" data-bs-slide="prev" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
+			    						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-left" viewBox="0 0 16 16">
+			    							<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+			    						</svg>
+			    					</button>
+			    					<div style="width: 1rem"></div>
+			    					<button data-bs-target="#carouselExampleControls1" data-bs-slide="next" class="btn rounded-pill d-flex justify-content-center align-items-center SelfStorage__bg_green" style="width: 66px; height: 66px;">
+			    						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="#fff" class="bi bi-chevron-right" viewBox="0 0 16 16">
+			    							<path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+			    						</svg>
+			    					</button>
+			    				</div>
+			    			</div>
+			    		</div>
+			    		<div class="col-12 col-lg-6">
+			    			<div class="row">
+			    				<p class="text-center text-lg-start SelfStorage_grey">Доступ по QR</p>
+			    				<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+			    					<span class="fs_30 fw-bold SelfStorage_orange">{{ storage.celsius_temperature }} °С</span>
+			    					<span class="SelfStorage_grey mb-3">Температура на складе</span>
+			    					<span class="fs_30 fw-bold SelfStorage_orange">{{ storage.avaliable_boxes|length }}  из {{ storage.boxes_amount }}</span>
+			    					<span class="SelfStorage_grey mb-3">Боксов свободно</span>
+			    				</div>
+			    				<div class="col-6 d-flex flex-column align-items-center align-items-lg-start">
+			    					<span class="fs_30 fw-bold SelfStorage_orange">до {{ storage.box_max_height }} м</span>
+			    					<span class="SelfStorage_grey mb-3">Высота потолка</span>
+			    					<span class="fs_30 fw-bold SelfStorage_orange">от {{storage.box_min_price}} ₽</span>
+			    					<span class="SelfStorage_grey mb-3">Оплата за месяц</span>
+			    				</div>
+			    				<div class="d-flex flex-column align-items-center align-items-lg-start">
+			    					<a href="#pills-tab" role="button" class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Арендовать бокс</a>
+			    					<button class="btn w-75 fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange">Позвонить мне</button>
+			    				</div>
+			    				<a href="#" class="text-center text-lg-start mt-4 SelfStorage_orange">Нужна помощь?</a>
+			    			</div>
+			    		</div>
+			    	</div>
+			    </div>
 			{% endfor %}
 		</div>
 
