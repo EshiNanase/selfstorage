@@ -1,7 +1,6 @@
 from django.core.management import BaseCommand
 from django.utils.timezone import now
 
-from personal_account.models import Client
 from email_sender import send_email
 from rents.models import Rent
 
