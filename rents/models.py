@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import QuerySet, Q
 from django.utils.timezone import now
@@ -58,3 +59,7 @@ class Rent(models.Model):
 
     def __str__(self):
         return f'Рента {self.id}'
+
+    def clean(self):
+        if self.box.is_stored:
+            raise ValidationError('Бокс уже занят')

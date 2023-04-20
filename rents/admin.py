@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 
 from rents.models import Rent
@@ -11,7 +11,6 @@ class RentAdmin(admin.ModelAdmin):
         'client',
         'box',
         'box_price',
-        'get_total_cost',
         'status',
         'started_at',
         'expired_at',
@@ -24,15 +23,15 @@ class RentAdmin(admin.ModelAdmin):
         'started_at',
         'expired_at',
     ]
-    list_display_links = [
-        'id'
-    ]
     readonly_fields = [
-        'client',
         'box_price',
         'started_at',
         'closed_at',
         'get_total_cost'
+    ]
+    list_filter = [
+        'status',
+        'box'
     ]
 
     def get_total_cost(self, obj):
@@ -46,8 +45,15 @@ class RentAdmin(admin.ModelAdmin):
 
     def save_form(self, request, form, change):
         instance = form.save(commit=False)
-        if not instance.closed_at and instance.status == 'CLOSED':
-            instance.closed_at = now()
+        if instance.box.is_stored:
+            raise ValidationError('Бокс занят')
+        if not instance.closed_at:
+            if instance.status == 'CLOSED':
+                instance.closed_at = now()
+                instance.box.is_stored = False
+            else:
+                instance.box.is_stored = True
+            instance.box.save()
         if not instance.closed_at and instance.expired_at < now():
             instance.status = 'EXPIRED'
         if not instance.box_price:

@@ -3,13 +3,17 @@ from django.utils.html import format_html
 
 from .models import Storage, StorageImage, Box
 
-
 admin.site.register(StorageImage)
 
 
 @admin.register(Box)
 class BoxAdmin(admin.ModelAdmin):
     list_filter = ['is_stored', 'storage__slug']
+    list_display = [
+        'id',
+        'storage',
+        'is_stored'
+    ]
 
 
 class BoxInline(admin.TabularInline):
@@ -26,6 +30,7 @@ class StorageImageInline(admin.TabularInline):
                 url=obj.image.url
             )
         )
+
     fields = ('image', 'preview_image')
 
 
