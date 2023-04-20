@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 
 
-def send_email(msg_body: str, subject: str, receivers: Iterable[str]) -> list[str]:
+def send_email(msg_body: str, subject: str, receivers: Iterable[str]) -> set[str]:
     """
     Рассылка писем по списку получателей
     :param msg_body: Текст письма
@@ -32,7 +32,7 @@ def send_email(msg_body: str, subject: str, receivers: Iterable[str]) -> list[st
     msg['From'] = sender_email
     msg['Subject'] = subject
 
-    success_sent = []
+    success_sent = set()
     for receiver in receivers:
         try:
             email_validator(receiver)
@@ -47,7 +47,7 @@ def send_email(msg_body: str, subject: str, receivers: Iterable[str]) -> list[st
         except smtplib.SMTPResponseException as ex:
             print(ex)
             continue
-        success_sent.append(receiver)
+        success_sent.add(receiver)
     smtpobj.quit()
 
     return success_sent

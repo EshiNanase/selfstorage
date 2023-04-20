@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.utils.timezone import now
 
 from personal_account.models import Client
@@ -12,13 +12,22 @@ class RentQuerySet(QuerySet):
     def filter_expired(self):
         right_now = now()
         yesterday = right_now - timedelta(days=1)
-        return self.filter(expired_at__lte=right_now, warning_sent_at__lt=yesterday).select_related('client')
+        return self.filter(
+            Q(expired_at__lte=right_now),
+            Q(closed_at__isnull=True),
+            Q(warning_sent_at__lt=yesterday) | Q(warning_sent_at__isnull=True)). \
+            select_related('client')
 
     def filter_soon_expiring(self):
         right_now = now()
         tomorrow = right_now + timedelta(days=1)
         yesterday = right_now - timedelta(days=1)
-        return self.filter(expired_at__lte=tomorrow, warning_sent_at__lt=yesterday).exclude(expired_at__gte=right_now).select_related('client')
+        return self.filter(
+            Q(expired_at__lte=tomorrow),
+            Q(expired_at__gte=right_now),
+            Q(closed_at__isnull=True),
+            Q(warning_sent_at__lt=yesterday) | Q(warning_sent_at__isnull=True)). \
+            select_related('client')
 
 
 class Rent(models.Model):
@@ -46,3 +55,6 @@ class Rent(models.Model):
     class Meta:
         verbose_name = 'Аренда'
         verbose_name_plural = 'Аренды'
+
+    def __str__(self):
+        return f'Рента {self.id}'
