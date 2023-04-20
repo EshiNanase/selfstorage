@@ -70,17 +70,15 @@
 				<div class="tab-pane fade" id="Rent" role="tabpanel" aria-labelledby="Rent-tab">
 					<h1 class="fw-bold SelfStorage_green mb-5">Добрый день, {{ client.name }}!</h1>
 					<a href="#" class="SelfStorage_orange">История аренды</a>
-					{% if not rents %}
-						<h4 class="SelfStorage_grey my-5">У вас еще нет аренды :(<br>Но вы можете арендовать свой первый бокс  по  привлекательной цене прямо сейчас</h4>
-						<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'boxes'%}'" type="button">Арендовать бокс</button></div>
-					{% else %}
 						{% for rent in rents %}
-							{% if rent.expired_soon %}
-								<h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или забрать вещи до {{ rent.expired_at }} включительно.</h4>
+                            {% if rent.status == "EXPIRED" %}
+								<h4 class="SelfStorage_orange my-3">Срок Вашей аренды истёк :(<br>Вам необходимо продлить аренду или забрать вещи как можно скорее.</h4>
+                            {% elif rent.expire_soon %}
+                                <h4 class="SelfStorage_grey my-3">Срок Вашей аренды подходит к концу :(<br>Вы можете продлить аренду или забрать вещи до {{ rent.expired_at }} включительно.</h4>
 							{% endif %}
 							<div class="mb-5">
-								<h4 class="SelfStorage_green">{{ rent.box.storage.title }}</h4>
-								<h4>{{ rent.box.storage.address }}</h4>
+								<h4 class="SelfStorage_green">Мой склад</h4>
+								<h4>{{ rent.box.storage.city }}, {{ rent.box.storage.street }}, {{ rent.box.storage.building }}</h4>
 								<h4 class="SelfStorage_green">Мой бокс</h4>
 								<h4>{{ rent.box.number }}</h4>
 								<h4 class="SelfStorage_green">Срок аренды</h4>
@@ -89,8 +87,10 @@
 								<div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
 								<a href="#" class="SelfStorage_orange">Нужна помощь?</a>
 							</div>
+                        {% empty %}
+                            <h4 class="SelfStorage_grey my-5">У вас еще нет аренды :(<br>Но вы можете арендовать свой первый бокс  по  привлекательной цене прямо сейчас</h4>
+						    <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'boxes'%}'" type="button">Арендовать бокс</button></div>
 						{% endfor %}
-					{% endif %}
 				</div>
 			</div>
 		</div>
