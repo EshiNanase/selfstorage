@@ -1,6 +1,8 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from .validators import thumbnail_image_restriction
+
 
 class Storage(models.Model):
     slug = models.SlugField('Название', blank=True)
@@ -11,6 +13,13 @@ class Storage(models.Model):
     building = models.CharField('Дом/корпус', max_length=20, blank=True)
     longitude = models.FloatField('Долгота', null=True, blank=True)
     latitude = models.FloatField('Широта', null=True, blank=True)
+    celsius_temperature = models.IntegerField('Температура в Цельсиях', null=True, blank=True)
+    thumbnail_image = models.ImageField(
+        'Миниатюра',
+        validators=[thumbnail_image_restriction],
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f'{self.city}, ул.{self.street}, д.{self.building}'

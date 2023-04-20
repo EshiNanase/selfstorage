@@ -42,8 +42,10 @@ class StorageAdmin(admin.ModelAdmin):
         'city',
         'street',
         'building',
+        'thumbnail_image',
         'specificity',
         'description',
+        'celsius_temperature',
         'longitude',
         'latitude',
         'slug'
