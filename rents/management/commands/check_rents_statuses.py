@@ -1,10 +1,9 @@
-from datetime import timedelta
-
 from django.core.management import BaseCommand
 from django.utils.timezone import now
 
 from personal_account.models import Client
 from email_sender import send_email
+from rents.models import Rent
 
 EXPIRED_NOTIFICATION = {
     'subject': 'Аренда закончилась',
@@ -20,24 +19,27 @@ SOON_EXPIRING_NOTIFICATION = {
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        right_now = now()
-        tomorrow = right_now + timedelta(days=1)
+        expired_rents = Rent.objects.filter_expired()
+        expired_rents.update(status=Rent.EXPIRED)
+        expired_rent_mailing_list = {
+            rent.client.email
+            for rent in expired_rents
+        }
 
-        clients_with_expired_rent = Client.objects. \
-            filter(rents__expired_at__gte=right_now)
+        soon_expiring_rents = Rent.objects.filter_soon_expiring()
+        soon_expiring_mailing_list = {rent.client.email for rent in soon_expiring_rents}
 
-        clients_with_soon_expiring_rent = Client. \
-            objects.filter(rents__expired_at__lte=tomorrow). \
-            exclude(rents__expired_at__gte=right_now)
-
-        send_email(
-            receivers=clients_with_expired_rent,
+        success_sent_expired = send_email(
+            receivers=expired_rent_mailing_list,
             msg_body=EXPIRED_NOTIFICATION['subject'],
             subject=EXPIRED_NOTIFICATION['text']
         )
 
-        send_email(
-            receivers=clients_with_soon_expiring_rent,
+        success_sent_soon_expiring = send_email(
+            receivers=soon_expiring_mailing_list,
             msg_body=SOON_EXPIRING_NOTIFICATION['subject'],
             subject=SOON_EXPIRING_NOTIFICATION['text']
         )
+        success_sent = success_sent_soon_expiring + success_sent_expired
+        if success_sent:
+            Client.objects.filter(email__in=success_sent).update(warning_sent_at=now())
