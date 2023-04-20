@@ -1,19 +1,23 @@
 import smtplib
-import sys
 from datetime import time
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
 # from email.mime.image import MIMEImage  # Изображения
+from typing import Iterable
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
-from django.db.models import QuerySet
-
-from personal_account.models import Client
 
 
-def send_email(msg_body: str, subject: str, receivers: QuerySet[Client]):
+def send_email(msg_body: str, subject: str, receivers: Iterable[str]) -> list[str]:
+    """
+    Рассылка писем по списку получателей
+    :param msg_body: Текст письма
+    :param subject: Тема письма
+    :param receivers: Список почтовых ящиков для рассылки
+    :return: Список почтовых ящиков, по которым удалась рассылка
+    """
     email_validator = EmailValidator()
 
     sender_email = settings.EMAIL_NOTIFIER_LOGIN
@@ -28,16 +32,22 @@ def send_email(msg_body: str, subject: str, receivers: QuerySet[Client]):
     msg['From'] = sender_email
     msg['Subject'] = subject
 
+    success_sent = []
     for receiver in receivers:
-        receiver_email = receiver.email
         try:
-            email_validator(receiver_email)
+            email_validator(receiver)
         except ValidationError:
+            print(f'Некорректный email: {receiver}')
             continue
 
-        msg['To'] = receiver_email
+        msg['To'] = receiver
         msg.attach(MIMEText(msg_body, 'plain'))
-        smtpobj.send_message(msg)
-        time.sleep = 5
-
+        try:
+            smtpobj.send_message(msg)
+        except smtplib.SMTPResponseException as ex:
+            print(ex)
+            continue
+        success_sent.append(receiver)
     smtpobj.quit()
+
+    return success_sent
