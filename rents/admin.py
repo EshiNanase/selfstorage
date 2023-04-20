@@ -10,6 +10,7 @@ class RentAdmin(admin.ModelAdmin):
         'client',
         'box',
         'box_price',
+        'get_total_cost',
         'status',
         'started_at',
         'expired_at',
