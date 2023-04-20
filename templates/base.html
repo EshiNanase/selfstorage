@@ -68,12 +68,12 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body d-flex justify-content-center align-items-center">
-				<form method="post" class="d-flex flex-column align-items-center" style="max-width: 420px">
+				<form method="post" action="{% url 'login' %}" class="d-flex flex-column align-items-center" style="max-width: 420px">
           {% csrf_token %}
 					<h1 class="modal-title text-center fw-bold mb-3">Регистрация</h1>
           {{ register_form }}
           <span class="fw-light SelfStorage_grey">Нажимая на кнопку, вы подтверждаете свое <a href="#" class="SelfStorage_grey">согласие на обработку персональных данных</a></span>
-					<input type="submit" name="register_form" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</input>
+					<button type="submit" name="register_form" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Зарегистрироваться</button>
 					<span>Уже зарегистрированы? <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#SignModal" data-bs-dismiss="modal" aria-label="Close">Войти в личный кабинет</a></span>
 				</form>
 			</div>
@@ -99,7 +99,7 @@
             {% endif %}
             {{ login_form }}
             <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#ForgetModal" data-bs-dismiss="modal" aria-label="Close">Забыли пароль?</a>
-            <input type="submit" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" name="login_form">Войти</input>
+            <button type="submit" class="btn border-8 py-3 px-5 mt-5 mb-3 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange" name="login_form">Войти</button>
             <span>Нет аккаунта?  <a href="#" class="SelfStorage_orange" data-bs-toggle="modal" data-bs-target="#RegModal" data-bs-dismiss="modal" aria-label="Close">Зарегистрируйтесь на сайте</a></span>
           </form>
         </div>

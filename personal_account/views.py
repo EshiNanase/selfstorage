@@ -14,14 +14,42 @@ def my_rent_view(request):
     initial_data = {
         'email': client.email,
         'phone_number': client.phone_number,
-        'password': client.password
     }
+
     profile_form = ProfileForm(initial=initial_data)
-
     if request.method == 'POST':
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if password1 != password2:
+            messages.error(request, 'Пароли не сходятся!')
+            return render(request, 'my-rent.html', {'profile_form': profile_form})
 
-        if 'profile_form' in request.POST:
-            pass
+        elif len(password1) < 8:
+            messages.error(request, 'Пароль должен быть не меньше восьми символов!')
+            return render(request, 'my-rent.html', {'profile_form': profile_form})
+
+        elif Client.objects.filter(email=request.POST['email']).exclude(id=client.id):
+            messages.error(request, 'Такая почта уже используется!')
+            return render(request, 'my-rent.html', {'profile_form': profile_form})
+
+        else:
+            if client.email != request.POST['email']:
+                client.email = request.POST['email']
+            client.phone_number = request.POST['phone_number']
+            client.set_password(password1)
+            client.save()
+
+            logout(request)
+            client = authenticate(email=client.email, password=password1)
+            login(request, client)
+
+            initial_data = {
+                'email': client.email,
+                'phone_number': client.phone_number,
+            }
+            profile_form = ProfileForm(initial=initial_data)
+
+            return render(request, 'my-rent.html', {'profile_form': profile_form})
 
     return render(request, 'my-rent.html', {'profile_form': profile_form})
 
@@ -39,7 +67,6 @@ def login_view(request):
     if request.method == 'POST':
 
         if 'login_form' in request.POST:
-            form = LoginUserForm(request.POST)
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(email=email, password=password)
@@ -48,7 +75,7 @@ def login_view(request):
                 return redirect('my-rent')
             else:
                 messages.error(request, 'Что-то пошло не так(')
-                return redirect('my-rent')
+                return redirect('index')
 
         elif 'register_form' in request.POST:
             form = RegisterUserForm(request.POST)
@@ -58,10 +85,7 @@ def login_view(request):
                 return redirect('my-rent')
             else:
                 messages.error(request, 'Что-то пошло не так(')
-                return redirect('my-rent')
-
-        elif 'profile_form' in request.POST:
-            pass
+                return redirect('index')
 
     return redirect('index')
 

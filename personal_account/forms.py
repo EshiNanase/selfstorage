@@ -17,12 +17,18 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = Client
-        fields = ['email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'password1', 'password2']
         widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'Имя'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'Фамилия'}),
             'email': forms.EmailInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'E-mail'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey', 'placeholder': 'Телефон'}),
         }
         labels = {
-            'email': ''
+            'first_name': '',
+            'last_name': '',
+            'email': '',
+            'phone_number': ''
         }
 
 
@@ -43,20 +49,28 @@ class LoginUserForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
 
+    password1 = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'disabled': True, 'name': 'PASSWORD_EDIT1', 'id': 'PASSWORD1', 'value': 'abracadabra'})
+    )
+    password2 = forms.CharField(
+        label='Подтверждение пароля',
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'disabled': True, 'name': 'PASSWORD_EDIT2', 'id': 'PASSWORD2', 'value': 'abracadabra'})
+    )
+
     class Meta:
         model = Client
-        fields = ['email', 'phone_number', 'password']
+        fields = ['email', 'phone_number', 'password1', 'password2']
         widgets = {
             'email': forms.EmailInput(
-                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
+                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'disabled': True, 'name': 'EMAIL_EDIT', 'id': 'EMAIL'}),
             'phone_number': forms.TextInput(
-                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
-            'password': forms.PasswordInput(
-                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'readonly': True}),
+                attrs={'class': 'form-control fs_24 ps-2 SelfStorage__input', 'disabled': True, 'name': 'PHONE_EDIT', 'id': 'PHONE'})
         }
         labels = {
             'email': 'E-mail',
-            'password': 'Пароль',
             'phone_number': 'Телефон'
         }
 

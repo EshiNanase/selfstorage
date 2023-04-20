@@ -21,18 +21,19 @@
 							<h4>{{ user.first_name }} {{ user.last_name }}</h4>
 						</div>
 						<div class="col-12 col-sm-7 d-flex flex-column">
-							<form>
-<!--                {% csrf_token %}-->
+              {% if messages %}
+                {% for message in messages %}
+                <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+                  {{ message }}
+                </div>
+                {% endfor %}
+              {% endif %}
+							<form method="post">
+                  {% csrf_token %}
                 {% for field in profile_form %}
 								  <label class="fs_24 SelfStorage_green ms-2" for="{{ field.auto_id }}">{{ field.label }}</label>
                   {{ field }}
                 {% endfor %}
-<!--								<label class="fs_24 SelfStorage_green ms-2" for="EMAIL">E-mail</label>-->
-<!--								<input type="email" name="EMAIL_EDIT" id="EMAIL" class="form-control fs_24 ps-2 SelfStorage__input" value="ekatyusha89@yandex.ru" disabled>-->
-<!--								<label class="fs_24 SelfStorage_green ms-2" for="PHONE">Телефон</label>-->
-<!--								<input type="tel" name="PHONE_EDIT" id="PHONE" class="form-control fs_24 ps-2 SelfStorage__input" value="+7-909-000-00-00" disabled>-->
-<!--								<label class="fs_24 SelfStorage_green ms-2" for="PASSWORD">Пароль</label>-->
-<!--								<input type="password" name="PASSWORD_EDIT" id="PASSWORD" class="form-control fs_24 ps-2 SelfStorage__input" value="111111111" disabled>-->
 								<button type="submit" class="btn SelfStorage_green ps-1" id="save" style="display: none">Сохранить</button>
 								<a class="btn SelfStorage_orange ps-1" id="edit">Редактировать</a>
 								<script>
@@ -40,8 +41,12 @@
 										e.preventDefault()
 										document.getElementById('EMAIL').disabled = false
 										document.getElementById('PHONE').disabled = false
-										document.getElementById('PASSWORD').disabled = false
-										document.getElementById('PASSWORD').type = 'text'
+										document.getElementById('PASSWORD1').disabled = false
+										document.getElementById('PASSWORD2').disabled = false
+										document.getElementById('PASSWORD1').type = 'text'
+										document.getElementById('PASSWORD2').type = 'text'
+										document.getElementById('PASSWORD1').value = ''
+										document.getElementById('PASSWORD2').value = ''
 										document.getElementById('edit').style.display = 'none'
 										document.getElementById('save').style.display = 'inline-block'
 									})
@@ -49,8 +54,10 @@
 										setTimeout(() => {
 											document.getElementById('EMAIL').disabled = true
 											document.getElementById('PHONE').disabled = true
-											document.getElementById('PASSWORD').disabled = true
-											document.getElementById('PASSWORD').type = 'password'
+											document.getElementById('PASSWORD1').disabled = true
+											document.getElementById('PASSWORD2').disabled = true
+											document.getElementById('PASSWORD1').type = 'password'
+											document.getElementById('PASSWORD2').type = 'password'
 											document.getElementById('edit').style.display = 'inline-block'
 											document.getElementById('save').style.display = 'none'
 										}, 0)

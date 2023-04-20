@@ -42,7 +42,7 @@ class Client(AbstractUser):
         verbose_name='Почта пользователя'
     )
     phone_number = PhoneNumberField(
-        unique=True
+        verbose_name='Телефон'
     )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
