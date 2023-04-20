@@ -1,5 +1,11 @@
+from datetime import timedelta
+
+from django.db.models import F, ExpressionWrapper, BooleanField
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
+
+from rents.models import Rent
 from .forms import RegisterUserForm, LoginUserForm, ProfileForm
 from .models import Client
 from django.contrib.auth import login, logout, authenticate
@@ -8,8 +14,8 @@ from django.contrib import messages
 
 @login_required
 def my_rent_view(request):
-
     client = Client.objects.get(email=request.user.email)
+    rents = Rent.objects.filter_active(client)
 
     initial_data = {
         'email': client.email,
@@ -51,7 +57,7 @@ def my_rent_view(request):
 
             return render(request, 'my-rent.html', {'profile_form': profile_form})
 
-    return render(request, 'my-rent.html', {'profile_form': profile_form})
+    return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 
 
 def inject_register_form(request):
@@ -63,7 +69,6 @@ def inject_login_form(request):
 
 
 def login_view(request):
-
     if request.method == 'POST':
 
         if 'login_form' in request.POST:

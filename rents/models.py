@@ -30,6 +30,12 @@ class RentQuerySet(QuerySet):
             Q(warning_sent_at__lt=yesterday) | Q(warning_sent_at__isnull=True)). \
             select_related('client')
 
+    def filter_active(self, client):
+        rents = self.filter(client__id=client.id, status__in=[Rent.EXPIRED, Rent.ACTIVE]).select_related('client')
+        for rent in rents:
+            rent.expire_soon = rent.expired_at < now() + timedelta(days=1)
+        return rents
+
 
 class Rent(models.Model):
     ACTIVE = 'ACTIVE'
@@ -59,7 +65,3 @@ class Rent(models.Model):
 
     def __str__(self):
         return f'Рента {self.id}'
-
-    def clean(self):
-        if self.box.is_stored:
-            raise ValidationError('Бокс уже занят')
