@@ -7,6 +7,15 @@
 DJANGO_SECRET_KEY = MY_KEY
 DEBUG = True
 ```
+
+Для работы Stripe необходимы следующие 3 переменные:
+```sh
+STRIPE_PUBLIC_KEY =
+STRIPE_SECRET_KEY =
+STRIPE_WEBHOOK_SECRET =
+BOX_STRIPE_ID =
+```
+
 Для отправки писем необходимо добавить еще 4 переменные:
 ```sh
 EMAIL_NOTIFIER_LOGIN = login@email.ru
