@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'utm_tracker',
     'phonenumber_field',
     'personal_account',
     'storage',
@@ -55,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'utm_tracker.middleware.UtmSessionMiddleware',
+    'utm_tracker.middleware.LeadSourceMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -62,7 +65,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'personal_account.views.inject_register_form',
-                'personal_account.views.inject_login_form',
+                'personal_account.views.inject_login_form'
             ],
         },
     },
@@ -85,7 +88,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -128,17 +131,16 @@ if DEBUG:
         os.path.join(BASE_DIR, 'static'),
     ]
 else:
-    STATIC_ROOT = BASE_DIR / 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 EMAIL_NOTIFIER_LOGIN = env.str('EMAIL_NOTIFIER_LOGIN')
 EMAIL_NOTIFIER_PASSWORD = env.str('EMAIL_NOTIFIER_PASSWORD')

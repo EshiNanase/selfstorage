@@ -50,12 +50,6 @@ class Client(AbstractUser):
         upload_to='avatars',
         verbose_name='Аватар'
     )
-    utm = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True,
-        verbose_name='Рекламный источник'
-    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
