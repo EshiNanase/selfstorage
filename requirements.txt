@@ -3,3 +3,4 @@ environs==9.5.0
 django-phonenumber-field[phonenumberslite]==7.0.2
 Pillow==9.5.0
 qrcode==7.4.2
+stripe==5.4.0
