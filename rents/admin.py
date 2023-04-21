@@ -35,10 +35,11 @@ class RentAdmin(admin.ModelAdmin):
     ]
 
     def get_total_cost(self, obj):
-        rent_ended_at = obj.closed_at or obj.expired_at
+        rent_ended_at = obj.closed_at or obj.expired_at or now()
         time_range = rent_ended_at - obj.started_at
         days = max(1, time_range.days)
-        total_cost = days * obj.box_price
+        price = obj.box_price or obj.box.price or 0
+        total_cost = days * price
         return total_cost
 
     get_total_cost.short_description = 'Общая стоимость'
