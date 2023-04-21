@@ -12,7 +12,7 @@ from django.core.validators import EmailValidator
 from qrcode.image.pil import PilImage
 
 
-def send_email_by_receivers(msg_body: str, subject: str, receivers: Iterable[str]) -> set[str]:
+def send_email_by_receivers(msg_body: str, subject: str, receivers):
     """
     Рассылка писем по списку получателей
     :param msg_body: Текст письма
@@ -41,7 +41,7 @@ def send_email(
         receiver: str,
         image: Image = None,
         user_defined_smtpobj: smtplib.SMTP_SSL = None
-) -> bool | None:
+) -> bool:
 
     sender_email = settings.EMAIL_NOTIFIER_LOGIN
     sender_password = settings.EMAIL_NOTIFIER_PASSWORD
