@@ -1,12 +1,15 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-# from email.mime.image import MIMEImage  # Изображения
+from email.mime.image import MIMEImage
+from io import BytesIO
 from typing import Iterable
 
+from PIL.Image import Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
+from qrcode.image.pil import PilImage
 
 
 def send_email_by_receivers(msg_body: str, subject: str, receivers: Iterable[str]) -> set[str]:
@@ -32,8 +35,13 @@ def send_email_by_receivers(msg_body: str, subject: str, receivers: Iterable[str
     return success_sent
 
 
-def send_email(msg_body: str, subject: str, receiver: str, user_defined_smtpobj: smtplib.SMTP_SSL = None):
-    email_validator = EmailValidator()
+def send_email(
+        msg_body: str,
+        subject: str,
+        receiver: str,
+        image: Image = None,
+        user_defined_smtpobj: smtplib.SMTP_SSL = None
+) -> bool | None:
 
     sender_email = settings.EMAIL_NOTIFIER_LOGIN
     sender_password = settings.EMAIL_NOTIFIER_PASSWORD
@@ -50,6 +58,8 @@ def send_email(msg_body: str, subject: str, receiver: str, user_defined_smtpobj:
     msg['From'] = sender_email
     msg['Subject'] = subject
 
+    email_validator = EmailValidator()
+
     try:
         email_validator(receiver)
     except ValidationError:
@@ -59,7 +69,15 @@ def send_email(msg_body: str, subject: str, receiver: str, user_defined_smtpobj:
         return
 
     msg['To'] = receiver
-    msg.attach(MIMEText(msg_body, 'plain'))
+    msg.attach(MIMEText(msg_body, 'html'))
+    if image:
+        byte_img = BytesIO()
+        image.save(byte_img, "PNG")
+        byte_img.seek(0)
+        msg_image = MIMEImage(byte_img.read())
+        msg_image.add_header('Content-ID', '<image1>')
+        msg.attach(msg_image)
+
     try:
         smtpobj.send_message(msg)
     except smtplib.SMTPResponseException as ex:
@@ -72,3 +90,4 @@ def send_email(msg_body: str, subject: str, receiver: str, user_defined_smtpobj:
         smtpobj.quit()
 
     return True
+

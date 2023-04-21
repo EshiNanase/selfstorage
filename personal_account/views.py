@@ -1,17 +1,16 @@
-from datetime import timedelta
+from io import BytesIO
 
 import qrcode
-from django.db.models import F, ExpressionWrapper, BooleanField
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.utils.timezone import now
+from django.shortcuts import render, redirect
 
+from email_sender import send_email
 from rents.models import Rent
 from storage.models import Box
 from .forms import RegisterUserForm, LoginUserForm, ProfileForm
 from .models import Client
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
 
 
 @login_required
@@ -102,8 +101,13 @@ def logout_view(request):
     return redirect('index')
 
 
-def send_qr(request, box_id):
-    box = Box.objects.filter(id=box_id).select_related('storage').first()
-    img = qrcode.make(f'box #{box.id} in {box.storage.slug}')
-    img.save('qr.png')
+def send_qr(request, rent_id):
+    rent = Rent.objects.filter(id=rent_id).select_related('box', 'box__storage', 'client').first()
+    img = qrcode.make(f'box #{rent.box.id} in {rent.box.storage.slug}')
+    send_email(
+        msg_body='<b>Отсканируйте QR-код</b>',
+        subject='Ваш QR-code для открытия бокса',
+        receiver=rent.client.email,
+        image=img.get_image()
+    )
     return my_rent_view(request)

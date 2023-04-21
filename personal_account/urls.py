@@ -5,5 +5,5 @@ urlpatterns = [
     path('', my_rent_view, name='my-rent'),
     path('logout', logout_view, name='logout'),
     path('login', login_view, name='login'),
-    path('send_qr <int:box_id>', send_qr, name='send_qr')
+    path('send_qr <int:rent_id>', send_qr, name='send_qr')
 ]
