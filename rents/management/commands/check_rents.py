@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.utils.timezone import now
 
-from email_sender import send_email
+from email_sender import send_email_by_receivers
 from rents.models import Rent
 
 EXPIRED_NOTIFICATION = {
@@ -30,13 +30,13 @@ class Command(BaseCommand):
         soon_expiring_mailing_list = {rent.client.email for rent in soon_expiring_rents}
         soon_expiring_rents_ids = [rent.id for rent in soon_expiring_rents]
 
-        success_sent_expired = send_email(
+        success_sent_expired = send_email_by_receivers(
             receivers=expired_rent_mailing_list,
             subject=EXPIRED_NOTIFICATION['subject'],
             msg_body=EXPIRED_NOTIFICATION['text']
         )
 
-        success_sent_soon_expiring = send_email(
+        success_sent_soon_expiring = send_email_by_receivers(
             receivers=soon_expiring_mailing_list,
             subject=SOON_EXPIRING_NOTIFICATION['subject'],
             msg_body=SOON_EXPIRING_NOTIFICATION['text']
