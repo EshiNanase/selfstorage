@@ -6,7 +6,7 @@ import requests
 def find_closest_storage(client_coordinates, storages):
     closest_storage = {
         'storage': storages[0],
-        'distance': distance.distance(storages[0].latitude, storages[0].longitude, client_coordinates)
+        'distance': distance.distance((storages[0].latitude, storages[0].longitude), client_coordinates)
     }
     for storage in storages[1:]:
         storage_coordinates = (storage.latitude, storage.longitude)
