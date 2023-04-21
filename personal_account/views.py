@@ -19,41 +19,48 @@ def my_rent_view(request):
         'email': client.email,
         'phone_number': client.phone_number,
     }
-
+    print(request.FILES)
     profile_form = ProfileForm(initial=initial_data)
     if request.method == 'POST':
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        if password1 != password2:
-            messages.error(request, 'Пароли не сходятся!')
-            return render(request, 'my-rent.html', {'profile_form': profile_form})
 
-        elif len(password1) < 8:
-            messages.error(request, 'Пароль должен быть не меньше восьми символов!')
-            return render(request, 'my-rent.html', {'profile_form': profile_form})
+        if 'profile_form' in request.POST:
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1 != password2:
+                messages.error(request, 'Пароли не сходятся!')
+                return render(request, 'my-rent.html', {'profile_form': profile_form})
 
-        elif Client.objects.filter(email=request.POST['email']).exclude(id=client.id):
-            messages.error(request, 'Такая почта уже используется!')
-            return render(request, 'my-rent.html', {'profile_form': profile_form})
+            elif len(password1) < 8:
+                messages.error(request, 'Пароль должен быть не меньше восьми символов!')
+                return render(request, 'my-rent.html', {'profile_form': profile_form})
 
-        else:
-            if client.email != request.POST['email']:
-                client.email = request.POST['email']
-            client.phone_number = request.POST['phone_number']
-            client.set_password(password1)
+            elif Client.objects.filter(email=request.POST['email']).exclude(id=client.id):
+                messages.error(request, 'Такая почта уже используется!')
+                return render(request, 'my-rent.html', {'profile_form': profile_form})
+
+            else:
+                if client.email != request.POST['email']:
+                    client.email = request.POST['email']
+                client.phone_number = request.POST['phone_number']
+                client.set_password(password1)
+                client.save()
+
+                logout(request)
+                client = authenticate(email=client.email, password=password1)
+                login(request, client)
+
+                initial_data = {
+                    'email': client.email,
+                    'phone_number': client.phone_number,
+                }
+                profile_form = ProfileForm(initial=initial_data)
+
+                return render(request, 'my-rent.html', {'profile_form': profile_form})
+
+        elif 'profile_image' in request.FILES:
+            client.avatar = request.FILES['profile_image']
             client.save()
-
-            logout(request)
-            client = authenticate(email=client.email, password=password1)
-            login(request, client)
-
-            initial_data = {
-                'email': client.email,
-                'phone_number': client.phone_number,
-            }
-            profile_form = ProfileForm(initial=initial_data)
-
-            return render(request, 'my-rent.html', {'profile_form': profile_form})
+            return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 
     return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 

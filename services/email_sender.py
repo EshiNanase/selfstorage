@@ -41,7 +41,7 @@ def send_email(
         receiver: str,
         image: Image = None,
         user_defined_smtpobj: smtplib.SMTP_SSL = None
-) -> bool | None:
+):
 
     sender_email = settings.EMAIL_NOTIFIER_LOGIN
     sender_password = settings.EMAIL_NOTIFIER_PASSWORD
