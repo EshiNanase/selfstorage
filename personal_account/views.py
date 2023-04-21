@@ -19,7 +19,6 @@ def my_rent_view(request):
         'email': client.email,
         'phone_number': client.phone_number,
     }
-    print(request.FILES)
     profile_form = ProfileForm(initial=initial_data)
     if request.method == 'POST':
 
@@ -28,15 +27,15 @@ def my_rent_view(request):
             password2 = request.POST['password2']
             if password1 != password2:
                 messages.error(request, 'Пароли не сходятся!')
-                return render(request, 'my-rent.html', {'profile_form': profile_form})
+                return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 
             elif len(password1) < 8:
                 messages.error(request, 'Пароль должен быть не меньше восьми символов!')
-                return render(request, 'my-rent.html', {'profile_form': profile_form})
+                return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 
             elif Client.objects.filter(email=request.POST['email']).exclude(id=client.id):
                 messages.error(request, 'Такая почта уже используется!')
-                return render(request, 'my-rent.html', {'profile_form': profile_form})
+                return render(request, 'my-rent.html', {'profile_form': profile_form, 'rents': rents})
 
             else:
                 if client.email != request.POST['email']:
