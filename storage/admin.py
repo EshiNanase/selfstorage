@@ -3,8 +3,6 @@ from django.utils.html import format_html
 
 from .models import Storage, StorageImage, Box
 
-admin.site.register(StorageImage)
-
 
 @admin.register(Box)
 class BoxAdmin(admin.ModelAdmin):
@@ -18,10 +16,12 @@ class BoxAdmin(admin.ModelAdmin):
 
 class BoxInline(admin.TabularInline):
     model = Box
+    extra = 0
 
 
 class StorageImageInline(admin.TabularInline):
     model = StorageImage
+    extra = 0
     readonly_fields = ['preview_image']
 
     def preview_image(self, obj):
