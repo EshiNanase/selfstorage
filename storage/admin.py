@@ -10,7 +10,7 @@ admin.site.register(StorageImage)
 class BoxAdmin(admin.ModelAdmin):
     list_filter = ['is_stored', 'storage__slug']
     list_display = [
-        'id',
+        'number',
         'storage',
         'is_stored'
     ]
