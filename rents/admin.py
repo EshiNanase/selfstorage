@@ -50,7 +50,11 @@ class RentAdmin(admin.ModelAdmin):
             instance.status = 'EXPIRED'
         if not instance.box_price:
             instance.box_price = instance.box.price
-        if not instance.closed_at and instance.status == 'CLOSED':
-            instance.closed_at = now()
-        instance.box.is_stored = False
+        if not instance.closed_at:
+            if instance.status == 'CLOSED':
+                instance.closed_at = now()
+                instance.box.is_stored = False
+            else:
+                instance.box.is_stored = True
+            instance.box.save()
         return form.save()
