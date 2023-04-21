@@ -69,5 +69,5 @@ class Rent(models.Model):
     def clean(self):
         box = Box.objects.filter(pk=self.box.id).prefetch_related('rents').first()
         active_rents = box.rents.filter(status__in=[Rent.EXPIRED, Rent.ACTIVE])
-        if self not in active_rents and self.status != Rent.CLOSED:
+        if active_rents and self not in active_rents and self.status != Rent.CLOSED:
             raise ValidationError('Данный бокс занят')
