@@ -9,6 +9,10 @@ from personal_account.models import Client
 from storage.models import Box
 
 
+def one_month_from_today():
+    return now() + timedelta(days=30)
+
+
 class RentQuerySet(QuerySet):
     def filter_expired(self):
         right_now = now()
@@ -53,7 +57,7 @@ class Rent(models.Model):
     box_price = models.DecimalField('Стоимость аренды в сутки', max_digits=10, decimal_places=2)
     status = models.CharField('Статус', choices=STATUSES, max_length=20, default='ACTIVE')
     started_at = models.DateTimeField('Начало аренды', default=now)
-    expired_at = models.DateTimeField('Окончание аренды')
+    expired_at = models.DateTimeField('Окончание аренды', default=one_month_from_today)
     closed_at = models.DateTimeField('Завершена', null=True, blank=True)
     warning_sent_at = models.DateTimeField('Предупреждение отправлено', null=True, blank=True)
 
@@ -68,8 +72,6 @@ class Rent(models.Model):
 
     def clean(self):
         box = Box.objects.filter(pk=self.box.id).prefetch_related('rents').first()
-        print(box)
         active_rents = box.rents.filter(status__in=[Rent.EXPIRED, Rent.ACTIVE])
-        print(active_rents)
         if active_rents and self not in active_rents and self.status != Rent.CLOSED:
             raise ValidationError('Данный бокс занят')

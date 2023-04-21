@@ -44,7 +44,20 @@ class Client(AbstractUser):
     phone_number = PhoneNumberField(
         verbose_name='Телефон'
     )
-    USERNAME_FIELD = "email"
+    avatar = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='avatars',
+        verbose_name='Аватар'
+    )
+    utm = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        verbose_name='Рекламный источник'
+    )
+
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = ClientManager()

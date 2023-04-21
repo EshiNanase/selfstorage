@@ -17,8 +17,16 @@
 				<div class="tab-pane fade show active" id="LK" role="tabpanel" aria-labelledby="LK-tab">
 					<div class="row">
 						<div class="col-12 col-sm-5 d-flex flex-column align-items-center">
-							<img src="{% static 'img/image10.png'%}" class="rounded-pill mb-3" alt="">
 							<h4>{{ user.first_name }} {{ user.last_name }}</h4>
+              {% if not user.avatar %}
+							  <img src="{% static 'avatars/cat.png'%}" class="rounded-pill mb-3" alt="" width="180px" height="180px">
+              {% else %}
+							  <img src="{{ user.avatar.url }}" class="rounded-pill mb-3" alt="" width="180px" height="180px">
+              {% endif %}
+              <form method="post" enctype="multipart/form-data" name="image_form">
+                 {% csrf_token %}
+                <input type="file" name="profile_image" accept="image/*" onchange="document.image_form.submit()">
+              </form>
 						</div>
 						<div class="col-12 col-sm-7 d-flex flex-column">
                           {% if messages %}
