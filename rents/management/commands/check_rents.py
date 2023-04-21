@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.utils.timezone import now
 
-from email_sender import send_email_by_receivers
+from services.email_sender import send_email_by_receivers
 from rents.models import Rent
 
 EXPIRED_NOTIFICATION = {

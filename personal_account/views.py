@@ -1,14 +1,11 @@
-from io import BytesIO
-
 import qrcode
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from email_sender import send_email
+from services.email_sender import send_email
 from rents.models import Rent
-from storage.models import Box
 from .forms import RegisterUserForm, LoginUserForm, ProfileForm
 from .models import Client
 
