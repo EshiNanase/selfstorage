@@ -1,7 +1,9 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
+from services.geocoder import set_coordinates
 from .validators import thumbnail_image_restriction
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 
 
 class Storage(models.Model):
@@ -20,6 +22,10 @@ class Storage(models.Model):
         null=True,
         blank=True
     )
+
+    def get_free_boxes(self):
+        total_boxes = self.boxes.prefetch_related('rents').all()
+        return [box for box in total_boxes if not box.rents.filter(status__in=['EXPIRED', 'ACTIVE'])]
 
     def __str__(self):
         return f'{self.city}, ул.{self.street}, д.{self.building}'
@@ -61,3 +67,11 @@ class StorageImage(models.Model):
     class Meta:
         verbose_name = 'Фото склада'
         verbose_name_plural = 'Фото складов'
+
+
+@receiver(post_save, sender=Storage)
+def define_coordinates(sender, instance, **kwargs):
+
+    if not instance.latitude or not instance.longitude:
+        instance.latitude, instance.longitude = set_coordinates(instance)
+        instance.save()
