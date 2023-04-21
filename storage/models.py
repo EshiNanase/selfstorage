@@ -2,6 +2,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from services.geocoder import set_coordinates
 from .validators import thumbnail_image_restriction
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
 
 
 class Storage(models.Model):
@@ -27,12 +29,6 @@ class Storage(models.Model):
 
     def __str__(self):
         return f'{self.city}, ул.{self.street}, д.{self.building}'
-
-    def save(self, *args, **kwargs):
-
-        if not self.latitude or not self.longitude:
-            self.latitude, self.longitude = set_coordinates(self)
-            self.save()
 
     class Meta:
         verbose_name = 'Склад'
@@ -71,3 +67,11 @@ class StorageImage(models.Model):
     class Meta:
         verbose_name = 'Фото склада'
         verbose_name_plural = 'Фото складов'
+
+
+@receiver(post_save, sender=Storage)
+def define_coordinates(sender, instance, **kwargs):
+
+    if not instance.latitude or not instance.longitude:
+        instance.latitude, instance.longitude = set_coordinates(instance)
+        instance.save()
