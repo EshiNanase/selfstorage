@@ -32,7 +32,6 @@ class Storage(models.Model):
 class Box(models.Model):
     number = models.CharField('Номер бокса', max_length=24)
     price = models.DecimalField('Стоимость аренды в сутки', max_digits=10, decimal_places=2)
-    is_stored = models.BooleanField('Занято', default=False)
     storage = models.ForeignKey(Storage, related_name='boxes', on_delete=models.CASCADE)
     width = models.IntegerField('Ширина (см)', validators=[MinValueValidator(0)])
     height = models.IntegerField('Высота (см)', validators=[MinValueValidator(0)])
@@ -44,6 +43,12 @@ class Box(models.Model):
     class Meta:
         verbose_name = 'Бокс'
         verbose_name_plural = 'Боксы'
+
+    @property
+    def is_stored(self):
+        active_rents = self.rents.filter(status__in=['EXPIRED', 'ACTIVE'])
+        if active_rents:
+            return True
 
 
 class StorageImage(models.Model):
