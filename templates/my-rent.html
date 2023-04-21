@@ -83,8 +83,8 @@
                             <h4>№ {{ rent.box.number }}</h4>
                             <h4 class="SelfStorage_green">Срок аренды</h4>
                             <h4>{{ rent.started_at }} - {{ rent.expired_at }}</h4>
-                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3">Продлить аренду</button></div>
-                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3">Открыть бокс</button></div>
+                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3" onclick="location.href='{% url 'boxes'%}'">Продлить аренду</button></div>
+                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'send_qr' rent.box.id %}'">Открыть бокс</button></div>
                             <a href="#" class="SelfStorage_orange">Нужна помощь?</a>
                         </div>
                     {% empty %}
