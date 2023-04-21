@@ -55,7 +55,7 @@ def boxes(request):
             'box_min_price': storage.boxes.aggregate(Min('price'))['price__min'],
             'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] / 100, 1)
         }
-        avaliable_boxes = [box for box in storage.boxes.all() if not box.is_stored]
+        avaliable_boxes = storage.get_free_boxes()
         for box in avaliable_boxes:
             box_desc = {
                 'number': box.number,
