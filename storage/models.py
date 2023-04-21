@@ -14,6 +14,7 @@ class Storage(models.Model):
     longitude = models.FloatField('Долгота', null=True, blank=True)
     latitude = models.FloatField('Широта', null=True, blank=True)
     celsius_temperature = models.IntegerField('Температура в Цельсиях', null=True, blank=True)
+    capacity = models.PositiveIntegerField('Максимальное кол-во боксов', null=True, blank=True)
     thumbnail_image = models.ImageField(
         'Миниатюра',
         validators=[thumbnail_image_restriction],
