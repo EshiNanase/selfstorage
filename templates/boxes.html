@@ -55,7 +55,7 @@
 	<article class="pt-header" id="BOX">
 		<div class="tab-content" id="boxes-content">
 			{% for storage in storages %}
-			    {% if storage is storages|first %}
+			    {% if forloop.first %}
 			    <div class="tab-pane fade show active" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
 			    {% else %}
 			    <div class="tab-pane fade" id="pills-{{ storage.slug }}" role="tabpanel" aria-labelledby="pills-{{ storage.slug }}-tab">
@@ -79,13 +79,13 @@
 			    			<div id="carouselExampleControls1" class="carousel slide" data-bs-ride="carousel">
 			    				<div class="carousel-inner">
 			    					{% for image in storage.images %}
-			    					    {% if image is storage.images|first %}
+			    					    {% if forloop.first %}
 			    					        <div class="carousel-item active">
 			    					    {% else %}
 			    					        <div class="carousel-item">
 			    					    {% endif %}
 			    					        	<div class="d-flex flex-column align-items-center">
-			    					    		    <img src="{{ image }}" alt="">
+			    					    		    <img src="{{ image }}" alt="" width="500px" height="auto">
 			    					    	    </div>
 			    					        </div>
 			    					{% endfor %}
