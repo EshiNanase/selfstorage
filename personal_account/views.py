@@ -13,6 +13,7 @@ from .models import Client
 @login_required
 def my_rent_view(request):
     client = Client.objects.get(email=request.user.email)
+    print(client.lead_sources)
     rents = Rent.objects.filter_active(client)
 
     initial_data = {

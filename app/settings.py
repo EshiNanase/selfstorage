@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'utm_tracker',
     'phonenumber_field',
     'personal_account',
     'storage',
@@ -55,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'utm_tracker.middleware.UtmSessionMiddleware',
+    'utm_tracker.middleware.LeadSourceMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -71,7 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'personal_account.views.inject_register_form',
-                'personal_account.views.inject_login_form',
+                'personal_account.views.inject_login_form'
             ],
         },
     },
@@ -139,7 +142,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 EMAIL_NOTIFIER_LOGIN = env.str('EMAIL_NOTIFIER_LOGIN')
 EMAIL_NOTIFIER_PASSWORD = env.str('EMAIL_NOTIFIER_PASSWORD')
 EMAIL_NOTIFIER_SMTP_SERVER = env.str('EMAIL_NOTIFIER_SMTP_SERVER')
@@ -152,3 +154,4 @@ STRIPE_PUBLIC_KEY = env.str('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = env.str('STRIPE_WEBHOOK_SECRET')
 BOX_STRIPE_ID = env.str('BOX_STRIPE_ID')
+
