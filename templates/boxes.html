@@ -344,8 +344,8 @@
 			    {% endif %}
 			</div>
 			<div class="tab-pane fade" id="pills-from10" role="tabpanel" aria-labelledby="pills-contact-tab">
-				{% if selected_storage.avaliable_boxes.from3_to10_area_boxes|length <= 2 %}
-			    	{% for box in selected_storage.avaliable_boxes.from3_to10_area_boxes %}
+				{% if selected_storage.avaliable_boxes.from10_area_boxes|length <= 2 %}
+			    	{% for box in selected_storage.avaliable_boxes.from10_area_boxes %}
 			    		<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 			    			<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 			    				<span class="SelfStorage_green fs_24 me-2">1 эт.</span><span class="fs_24">№{{ box.number }}</span>
@@ -362,7 +362,7 @@
 			    		</a>
 			    	{% endfor %}
 			    {% else %}
-			    	{% for box in selected_storage.avaliable_boxes.from3_to10_area_boxes|slice:":2" %}
+			    	{% for box in selected_storage.avaliable_boxes.from10_area_boxes|slice:":2" %}
 			    		<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 			    			<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 			    				<span class="SelfStorage_green fs_24 me-2">1 эт.</span><span class="fs_24">№{{ box.number }}</span>
@@ -379,7 +379,7 @@
 			    		</a>
 			    	{% endfor %}
 			    	<div class="collapse" id="collapse-all">
-			    	{% for box in selected_storage.avaliable_boxes.from3_to10_area_boxes|slice:"2:" %}
+			    	{% for box in selected_storage.avaliable_boxes.from10_area_boxes|slice:"2:" %}
 			    		<a href="#" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 			    			<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
 			    				<span class="SelfStorage_green fs_24 me-2">1 эт.</span><span class="fs_24">№{{ box.number }}</span>
