@@ -27,7 +27,7 @@ def create_checkout_session(client, box_id):
             ],
             mode='payment',
             metadata={'client_id': client.id, 'box_id': box.id},
-            success_url='https://www.youtube.com/watch?v=cuX5QQXbLDQ',
+            success_url='http://81.163.31.199/profile/',
         )
     except Exception as e:
         print(str(e))
