@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Min, Max
 from services.geocoder import find_closest_storage
 from django.conf import settings
@@ -6,7 +6,8 @@ import requests
 import json
 
 from .models import Storage, Box
-from rents.models import Rent
+from personal_account.models import Client
+from services.payment import create_checkout_session
 
 
 def faq(request):
@@ -42,6 +43,13 @@ def index(request):
     lowest_price = total_boxes.order_by('-price')[0].price
 
     return render(request, 'index.html', {'storage': closest_storage, 'free_boxes': len(free_boxes), 'total_boxes': len(total_boxes), 'lowest_price': lowest_price})
+
+
+def payment(request, box_id):
+    client = Client.objects.filter(email=request.user.email)
+    if not client:
+        return redirect('index')
+    return create_checkout_session(client.first(), box_id)
 
 
 def storages(request):
@@ -97,6 +105,7 @@ def boxes_on_storage(request, slug):
     if avaliable_boxes:
         for box in avaliable_boxes:
             box_desc = {
+                'id': box.id,
                 'number': box.number,
                 'price': box.price,
                 'width': round(box.width / 100, 1),

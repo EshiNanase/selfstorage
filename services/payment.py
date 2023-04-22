@@ -8,11 +8,13 @@ from rents.models import Rent
 from storage.models import Box
 
 
-def create_checkout_session(client, box):
+def create_checkout_session(client, box_id):
+
+    box = Box.objects.get(id=box_id)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     response = stripe.Price.create(
-        unit_amount=box.price*100,
+        unit_amount=int(box.price)*100,
         product=settings.BOX_STRIPE_ID,
         currency='rub',
 
