@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Min, Max
 from services.geocoder import find_closest_storage
+from django.conf import settings
 import requests
 import json
 
@@ -13,11 +14,21 @@ def faq(request):
 
 
 def index(request):
-    response = requests.get('https://api.ipify.org?format=json')
-    response.raise_for_status()
-    ip_data = json.loads(response.text)
 
-    response = requests.get('http://ip-api.com/json/' + ip_data['ip'])
+    if settings.DEBUG:
+
+        response = requests.get('https://api.ipify.org?format=json')
+        response.raise_for_status()
+        ip_data = json.loads(response.text)
+        ip = ip_data['ip']
+    else:
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+    response = requests.get('http://ip-api.com/json/' + ip)
     response.raise_for_status()
     address_data = json.loads(response.text)
 
