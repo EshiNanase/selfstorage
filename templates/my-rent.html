@@ -91,13 +91,13 @@
                             <h4>№ {{ rent.box.number }}</h4>
                             <h4 class="SelfStorage_green">Срок аренды</h4>
                             <h4>{{ rent.started_at }} - {{ rent.expired_at }}</h4>
-                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3" onclick="location.href='{% url 'boxes'%}'">Продлить аренду</button></div>
+                            <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_green SelfStorage__btn2_green mb-3" onclick="location.href='{% url 'boxes_on_storage' rent.box.storage.slug %}'">Продлить аренду</button></div>
                             <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'send_qr' rent.id %}'">Открыть бокс</button></div>
                             <a href="#" class="SelfStorage_orange">Нужна помощь?</a>
                         </div>
                     {% empty %}
                         <h4 class="SelfStorage_grey my-5">У вас еще нет аренды :(<br>Но вы можете арендовать свой первый бокс  по  привлекательной цене прямо сейчас</h4>
-                        <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'boxes'%}'" type="button">Арендовать бокс</button></div>
+                        <div><button class="btn fs_24 px-5 py-3 text-white border-8 SelfStorage__bg_orange SelfStorage__btn2_orange mb-3" onclick="location.href='{% url 'storages' %}'" type="button">Арендовать бокс</button></div>
                     {% endfor %}
 				</div>
 			</div>
