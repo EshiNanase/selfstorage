@@ -54,7 +54,7 @@ def boxes(request):
             'celsius_temperature': storage.celsius_temperature,
             'boxes_amount': storage.boxes.count,
             'box_min_price': storage.boxes.aggregate(Min('price'))['price__min'],
-            'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] / 100, 1)
+            'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] or 0 / 100, 1)
         }
         avaliable_boxes = storage.get_free_boxes()
         for box in avaliable_boxes:
