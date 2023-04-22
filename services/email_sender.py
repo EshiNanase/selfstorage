@@ -3,13 +3,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from io import BytesIO
-from typing import Iterable
 
 from PIL.Image import Image
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
-from qrcode.image.pil import PilImage
 
 
 def send_email_by_receivers(msg_body: str, subject: str, receivers):
@@ -80,7 +78,7 @@ def send_email(
 
     try:
         smtpobj.send_message(msg)
-    except smtplib.SMTPResponseException as ex:
+    except smtplib.SMTPException as ex:
         print(ex)
         if not user_defined_smtpobj:
             smtpobj.quit()

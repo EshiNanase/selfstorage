@@ -51,20 +51,21 @@ def boxes(request):
     }
 
     for storage in storages:
+
         storage_desc = {
             'description': storage.description,
             'specificity': storage.specificity,
             'city': storage.city,
             'street': storage.street,
             'building': storage.building,
-            'thumbnail_image': storage.thumbnail_image.url,
+            'thumbnail_image': storage.thumbnail_image.url if storage.thumbnail_image else '/static/img/storage_preview.png',
             'slug': storage.slug,
             'images': [item.image.url for item in storage.images.all()],
             'avaliable_boxes': [],
             'celsius_temperature': storage.celsius_temperature,
             'boxes_amount': storage.boxes.count,
             'box_min_price': storage.boxes.aggregate(Min('price'))['price__min'],
-            'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] / 100, 1)
+            'box_max_height': round(storage.boxes.aggregate(Max('height'))['height__max'] or 0 / 100, 1)
         }
         avaliable_boxes = storage.get_free_boxes()
         for box in avaliable_boxes:
