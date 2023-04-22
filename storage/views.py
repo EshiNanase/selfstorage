@@ -91,7 +91,7 @@ def boxes_on_storage(request, slug):
             'celsius_temperature': selected_storage.celsius_temperature,
             'boxes_amount': selected_storage.boxes.count,
             'box_min_price': selected_storage.boxes.aggregate(Min('price'))['price__min'],
-            'box_max_height': round(selected_storage.boxes.aggregate(Max('height'))['height__max'] or 0 / 100, 1)
+            'box_max_height': round(selected_storage.boxes.aggregate(Max('height'))['height__max'] / 100, 1)
     }
     avaliable_boxes = selected_storage.get_free_boxes()
     if avaliable_boxes:
