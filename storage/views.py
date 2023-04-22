@@ -13,11 +13,13 @@ def faq(request):
 
 
 def index(request):
-    response = requests.get('https://api.ipify.org?format=json')
-    response.raise_for_status()
-    ip_data = json.loads(response.text)
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
 
-    response = requests.get('http://ip-api.com/json/' + ip_data['ip'])
+    response = requests.get('http://ip-api.com/json/' + ip)
     response.raise_for_status()
     address_data = json.loads(response.text)
 
