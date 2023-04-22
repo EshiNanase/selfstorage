@@ -126,6 +126,7 @@
 			    </div>
 		</div>
 
+		{% if selected_storage.avaliable_boxes.all_boxes %}
 		<form class="row mt-5 d-none">
 			<div class="col-6 col-lg-3">
 				<input type="radio" name="BOXES_FILTER" id="ALL_BOXES" class="SelfStorage_radio d-none" checked>
@@ -159,7 +160,6 @@
 			</li>
 		</ul>
 		<div class="tab-content" id="pills-tabContent">
-			{% if selected_storage.avaliable_boxes %}
 			<div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-home-tab">
 				{% if selected_storage.avaliable_boxes.all_boxes|length <= 2 %}
 				    {% for box in selected_storage.avaliable_boxes.all_boxes %}
@@ -405,9 +405,12 @@
 			    {% endif %}
 			</div>
 		{% else %}
-			<p>Нет свободных боксов((</p>
+			<div class="d-flex justify-content-center align-items-center mt-10">
+				<p class="fs_24">Нет свободных боксов</p>
+			</div>
 		{% endif %}
 		</div>
+    </div>
 	</article>
 </main>
 {% endblock %}
