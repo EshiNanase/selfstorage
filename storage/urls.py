@@ -7,7 +7,7 @@ from storage.views import faq, index, boxes_on_storage, storages, payment, strip
 urlpatterns = [
     path('faq', faq, name='faq'),
     path('', index, name='index'),
-    path('storages', storages, name='storages'),
+    path('storages/', storages, name='storages'),
     path('boxes/<slug>', boxes_on_storage, name='boxes_on_storage'),
     path('payment/<int:box_id>', payment, name='payment'),
     path('webhook', stripe_webhook_view)

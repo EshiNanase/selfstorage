@@ -211,8 +211,8 @@
 				    			<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
 				    		</div>
 				    	</a>
-				    </div>
 				    {% endfor %}
+				    </div>
 				    <div class="d-flex justify-content-center mt-5">
 				    	<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-all" data-bs-toggle="collapse" data-bs-target="#collapse-all" aria-expanded="false" aria-controls="collapse-all">Другие боксы</button>
 				    	<script>
@@ -256,7 +256,7 @@
 				        	</div>
 				        </a>
 				    {% endfor %}
-				    <div class="collapse" id="collapse-all">
+				    <div class="collapse" id="collapse-to3">
 				    {% for box in selected_storage.avaliable_boxes.to3_area_boxes|slice:"2:" %}
 				        <a href="{% url 'payment' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 				    		<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
@@ -272,8 +272,8 @@
 				    			<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
 				    		</div>
 				    	</a>
-				    </div>
 				    {% endfor %}
+				    </div>
 				    <div class="d-flex justify-content-center mt-5">
 				    	<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-to3" data-bs-toggle="collapse" data-bs-target="#collapse-to3" aria-expanded="false" aria-controls="collapse-to3">Другие боксы</button>
 				    	<script>
@@ -317,7 +317,7 @@
 			    			</div>
 			    		</a>
 			    	{% endfor %}
-			    	<div class="collapse" id="collapse-all">
+			    	<div class="collapse" id="collapse-to10">
 			    	{% for box in selected_storage.avaliable_boxes.from3_to10_area_boxes|slice:"2:" %}
 				        <a href="{% url 'payment' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 			    			<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
@@ -333,8 +333,8 @@
 			    				<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
 			    			</div>
 			    		</a>
-			    	</div>
 			    	{% endfor %}
+				    </div>
 			    	<div class="d-flex justify-content-center mt-5">
 			    		<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-to10" data-bs-toggle="collapse" data-bs-target="#collapse-to10" aria-expanded="false" aria-controls="collapse-to10">Другие боксы</button>
 			    		<script>
@@ -378,7 +378,7 @@
 			    			</div>
 			    		</a>
 			    	{% endfor %}
-			    	<div class="collapse" id="collapse-all">
+			    	<div class="collapse" id="collapse-from10">
 			    	{% for box in selected_storage.avaliable_boxes.from10_area_boxes|slice:"2:" %}
 				        <a href="{% url 'payment' box_id=box.id %}" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink">
 			    			<div class="col-12 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
@@ -394,8 +394,8 @@
 			    				<span class="btn my-2 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange border-8">От {{ box.price }} ₽</span>
 			    			</div>
 			    		</a>
-			    	</div>
 			    	{% endfor %}
+				    </div>
 			    	<div class="d-flex justify-content-center mt-5">
 			    		<button class="btn w-auto py-3 px-5 SelfStorage__bg_orange SelfStorage__btn2_orange text-white text-center fs_24 border-8" id="btn-collapse-from10" data-bs-toggle="collapse" data-bs-target="#collapse-from10" aria-expanded="false" aria-controls="collapse-from10">Другие боксы</button>
 			    		<script>
