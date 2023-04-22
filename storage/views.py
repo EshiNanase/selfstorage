@@ -40,7 +40,7 @@ def index(request):
 
     client_coordinates = (address_data['lat'], address_data['lon'])
 
-    storages = Storage.objects.all()
+    storages = Storage.objects.filter(boxes__isnull=False).distinct()
     closest_storage = find_closest_storage(client_coordinates, storages)
 
     total_boxes = closest_storage.boxes.all()
@@ -58,7 +58,7 @@ def payment(request, box_id):
 
 
 def storages(request):
-    storages = Storage.objects.all()
+    storages = Storage.objects.filter(boxes__isnull=False).distinct()
     context = {
         'storages': []
     }
@@ -81,7 +81,7 @@ def storages(request):
 
 
 def boxes_on_storage(request, slug):
-    storages = Storage.objects.all()
+    storages = Storage.objects.filter(boxes__isnull=False).distinct()
     selected_storage = get_object_or_404(Storage, slug=slug)
 
     context = {
