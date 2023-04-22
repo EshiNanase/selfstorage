@@ -40,13 +40,14 @@ def boxes(request):
     }
 
     for storage in storages:
+
         storage_desc = {
             'description': storage.description,
             'specificity': storage.specificity,
             'city': storage.city,
             'street': storage.street,
             'building': storage.building,
-            'thumbnail_image': storage.thumbnail_image.url,
+            'thumbnail_image': storage.thumbnail_image.url if storage.thumbnail_image else '/static/img/storage_preview.png',
             'slug': storage.slug,
             'images': [item.image.url for item in storage.images.all()],
             'avaliable_boxes': [],
