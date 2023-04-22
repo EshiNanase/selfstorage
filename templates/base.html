@@ -28,7 +28,7 @@
             <a class="nav-link SelfStorage_black" href="{% url 'faq' %}">Правила хранения</a>
           </li>
           <li class="nav-item me-5">
-            <a class="nav-link SelfStorage_black" href="{% url 'boxes' %}">Арендовать бокс</a>
+            <a class="nav-link SelfStorage_black" href="{% url 'storages' %}">Арендовать бокс</a>
           </li>
           {% if user.is_authenticated %}
             <li class="nav-item d-flex align-items-center me-5">
@@ -157,7 +157,7 @@
       <div class="col-6 col-md-4 d-flex flex-column">
         <p><a href="#" class="link-dark text-decoration-none">Тарифы</a></p>
         <p><a href="#" class="link-dark text-decoration-none">Рассчитать стоимость</a></p>
-        <p><a href="{% url 'boxes' %}" class="link-dark text-decoration-none">Арендовать бокс</a></p>
+        <p><a href="{% url 'storages' %}" class="link-dark text-decoration-none">Арендовать бокс</a></p>
       </div>
       <div class="col-6 col-md-4 d-flex flex-column">
         <p><a href="#" class="link-dark text-decoration-none">Правила хранения</a></p>

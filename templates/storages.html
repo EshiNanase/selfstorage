@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Аренда боксов{% endblock %}
+
+{% block content %}
+
+<main class="container mt-header">
+	<article class="row">
+		<div class="col-12 col-lg-6 mb-3 mb-lg-0">
+			<h1 class="fw-bold SelfStorage_green mb-5">Доставка и бережное хранение ваших вещей</h1>
+			<h4 class="fw-lighter SelfStorage_grey mb-5">Аренда бокса на любой срок Бесплатная доставка от вашего дома </h4>
+			<form class="">
+				<input type="text" required name="EMAIL1" class="form-control  border-8 mb-4 py-3 px-5 border-0 fs_24 SelfStorage__bg_lightgrey" placeholder="Укажите ваш e-mail">
+				<button class="btn  border-8 py-3 px-5 w-100 text-white fs_24 SelfStorage__bg_orange SelfStorage__btn2_orange">Рассчитать стоимость</button>
+				<span class="text-center fw-light">Нажимая на кнопку, вы подтверждаете свое <a href="#" class="link-dark">согласие на обработку персональных данных</a></span>
+			</form>
+		</div>
+		<div class="col-12 col-lg-6 SelfStorage__img"></div>
+	</article>
+	<article class="mt-header">
+		<h1 class="text-center fw-bold SelfStorage_green mb-5">Аренда боксов</h1>
+		<h6 class="text-center SelfStorage_grey">Арендуйте склад индивидуального хранения по уникальной цене прямо сейчас</h6>
+		<ul class="nav nav-pills mb-3 d-flex justify-content-between" id="boxes-links" role="tablist">
+			{% for storage in storages %}
+			    <li class="nav-item flex-grow-1 mx-2" role="presentation">
+			    	<a href="/boxes/{{ storage.slug }}#BOX" class="row text-decoration-none py-3 px-4 mt-5 SelfStorage__boxlink" id="pills-{{ storage.slug }}-tab">
+			    		<div class="col-12 col-lg-3 d-flex justify-content-center">
+			    			<img src="{{ storage.thumbnail_image }}" alt="" class="mb-3 mb-lg-0">
+			    		</div>
+			    		<div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+			    			<h4 class="text-center">{{ storage.city }}</h4>
+			    			<h6 class="text-center">{{ storage.street }}, {{ storage.building }}</h6>
+			    		</div>
+			    		<div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+			    			<h4 class="text-center">{{ storage.avaliable_boxes|length }}  из {{ storage.boxes_amount }}</h4>
+			    			<h6 class="text-center">Боксов свободно</h6>
+			    		</div>
+			    		<div class="col-12 col-md-4 col-lg-3 d-flex flex-column justify-content-center">
+			    			<h4 class="text-center SelfStorage_green">от {{storage.box_min_price}} ₽</h4>
+			    			<h6 class="text-center">{{ storage.specificity }}</h6>
+			    		</div>
+			    	</a>
+			    </li>
+			{% endfor %}
+		</ul>
+	</article>
+</main>
+{% endblock %}
